@@ -54,9 +54,11 @@ public class PositionCalculatorTest {
 
     @Test
     public void testFurthestPoint() {
-        Position furthestPoint = positionCalculator.calculateFurthestPoint(validStream, validMoves);
+        Position furthestPoint = positionCalculator.calculateFurthestPoint(validTestStream, validMoves);
 
         System.out.println(furthestPoint.toString());
+
+        assertTrue(testLastPosition.equals(furthestPoint));
     }
 
     @Test(expected = IllegalArgumentException.class)
