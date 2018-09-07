@@ -20,14 +20,7 @@ public class PositionCalculator {
         Position lastPosition = new Position(0, 0);
 
         allMoves.forEach(move -> {
-            Position nextPosition = validMoves.get(Integer.valueOf(move));
-
-            if (nextPosition == null) {
-                throw new IllegalArgumentException("Next move is not valid: " + move);
-            }
-
-            lastPosition.setX(lastPosition.getX() + nextPosition.getX());
-            lastPosition.setY(lastPosition.getY() + nextPosition.getY());
+            changePosition(validMoves, lastPosition, move);
         });
 
         return lastPosition;
@@ -44,14 +37,7 @@ public class PositionCalculator {
         Position lastPosition = new Position(0, 0);
 
         allMoves.forEach(move -> {
-            Position nextPosition = validMoves.get(Integer.valueOf(move));
-
-            if (nextPosition == null) {
-                throw new IllegalArgumentException("Next move is not valid: " + move);
-            }
-
-            lastPosition.setX(lastPosition.getX() + nextPosition.getX());
-            lastPosition.setY(lastPosition.getY() + nextPosition.getY());
+            changePosition(validMoves, lastPosition, move);
 
             if (lastPosition.getX() == lastPosition.getY()) {
                 allEqualPositions.add(new Position(lastPosition.getX(), lastPosition.getY()));
@@ -74,14 +60,7 @@ public class PositionCalculator {
         AtomicReference<Double> furthestDistance = new AtomicReference<Double>(0.0);
 
         allMoves.forEach(move -> {
-            Position nextPosition = validMoves.get(Integer.valueOf(move));
-
-            if (nextPosition == null) {
-                throw new IllegalArgumentException("Next move is not valid: " + move);
-            }
-
-            lastPosition.setX(lastPosition.getX() + nextPosition.getX());
-            lastPosition.setY(lastPosition.getY() + nextPosition.getY());
+            changePosition(validMoves, lastPosition, move);
 
             double distanceBetweenPoints = Math.sqrt(Math.pow(lastPosition.getX(), 2) + Math.pow(lastPosition.getY(), 2));
 
@@ -109,5 +88,16 @@ public class PositionCalculator {
             e.printStackTrace();
             return Collections. <String> emptyList();
         }
+    }
+
+    private void changePosition(Map<Integer, Position> validMoves, Position position, String move) {
+        Position nextPosition = validMoves.get(Integer.valueOf(move));
+
+        if (nextPosition == null) {
+            throw new IllegalArgumentException("Next move is not valid: " + move);
+        }
+
+        position.setX(position.getX() + nextPosition.getX());
+        position.setY(position.getY() + nextPosition.getY());
     }
 }
