@@ -18,6 +18,7 @@ public class PositionCalculatorTest {
     private PositionCalculator positionCalculator;
 
     private Position testLastPosition;
+    private Position testFurtherPoint;
 
     private Map<Integer, Position> validMoves;
 
@@ -27,7 +28,8 @@ public class PositionCalculatorTest {
         invalidStream = PositionCalculatorTest.class.getResourceAsStream("/invalidmoves");
         validTestStream = PositionCalculatorTest.class.getResourceAsStream("/testmoves");
 
-        testLastPosition = new Position(0,4);
+        testLastPosition = new Position(-2,3);
+        testFurtherPoint = new Position(0, 4);
 
         positionCalculator = new PositionCalculator();
         validMoves = populateValidMovesList();
@@ -40,7 +42,7 @@ public class PositionCalculatorTest {
 
         lastPosition = positionCalculator.calculateLastPosition(validTestStream, validMoves);
 
-        assertTrue(testLastPosition.equals(lastPosition));
+        assertEquals(testLastPosition, lastPosition);
     }
 
     @Test
@@ -54,11 +56,12 @@ public class PositionCalculatorTest {
 
     @Test
     public void testFurthestPoint() {
-        Position furthestPoint = positionCalculator.calculateFurthestPoint(validTestStream, validMoves);
+        Position furthestPoint = positionCalculator.calculateFurthestPoint(validStream, validMoves);
+        System.out.println("Furthest position is: " + furthestPoint.toString());
 
-        System.out.println(furthestPoint.toString());
+        furthestPoint = positionCalculator.calculateFurthestPoint(validTestStream, validMoves);
 
-        assertTrue(testLastPosition.equals(furthestPoint));
+        assertEquals(testFurtherPoint, furthestPoint);
     }
 
     @Test(expected = IllegalArgumentException.class)
