@@ -12,9 +12,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class PositionCalculatorTest {
-    private InputStream validStream;
-    private InputStream invalidStream;
-    private InputStream validTestStream;
     private PositionCalculator positionCalculator;
 
     private Position testLastPosition;
@@ -24,10 +21,6 @@ public class PositionCalculatorTest {
 
     @Before
     public void setup() {
-        validStream = PositionCalculatorTest.class.getResourceAsStream("/moves");
-        invalidStream = PositionCalculatorTest.class.getResourceAsStream("/invalidmoves");
-        validTestStream = PositionCalculatorTest.class.getResourceAsStream("/testmoves");
-
         testLastPosition = new Position(-2,3);
         testFurtherPoint = new Position(0, 4);
 
@@ -37,6 +30,9 @@ public class PositionCalculatorTest {
 
     @Test
     public void testValidMoves() {
+        InputStream validStream = PositionCalculatorTest.class.getResourceAsStream("/moves");
+        InputStream validTestStream = PositionCalculatorTest.class.getResourceAsStream("/testmoves");
+
         Position lastPosition = positionCalculator.calculateLastPosition(validStream, validMoves);
         System.out.println("Last position is: " + lastPosition.toString());
 
@@ -47,6 +43,8 @@ public class PositionCalculatorTest {
 
     @Test
     public void testEqualPositions() {
+        InputStream validStream = PositionCalculatorTest.class.getResourceAsStream("/moves");
+
         Set<Position> equalsPositions = positionCalculator.checkForEqualPositions(validStream, validMoves);
 
         equalsPositions.forEach(System.out::println);
@@ -56,6 +54,9 @@ public class PositionCalculatorTest {
 
     @Test
     public void testFurthestPoint() {
+        InputStream validStream = PositionCalculatorTest.class.getResourceAsStream("/moves");
+        InputStream validTestStream = PositionCalculatorTest.class.getResourceAsStream("/testmoves");
+
         Position furthestPoint = positionCalculator.calculateFurthestPoint(validStream, validMoves);
         System.out.println("Furthest position is: " + furthestPoint.toString());
 
@@ -71,6 +72,8 @@ public class PositionCalculatorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testInvalidInput() {
+        InputStream invalidStream = PositionCalculatorTest.class.getResourceAsStream("/invalidmoves");
+
         positionCalculator.calculateLastPosition(invalidStream, validMoves);
     }
 
