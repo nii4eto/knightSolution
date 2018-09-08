@@ -125,5 +125,4 @@ public class PositionCalculator {
         position.setX(position.getX() + nextPosition.getX());
         position.setY(position.getY() + nextPosition.getY());
     }
-
 }
