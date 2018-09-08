@@ -15,7 +15,7 @@ public class PositionCalculator {
             throw new IllegalArgumentException("Invalid input");
         }
 
-        List<String> allMoves = readFileOfMoves(input);
+        List<Integer> allMoves = readFileOfMoves(input);
 
         Position lastPosition = new Position(0, 0);
 
@@ -31,7 +31,7 @@ public class PositionCalculator {
             throw new IllegalArgumentException("Invalid input");
         }
 
-        List<String> allMoves = readFileOfMoves(input);
+        List<Integer> allMoves = readFileOfMoves(input);
 
         Set<Position> allEqualPositions = new HashSet<>();
         Position lastPosition = new Position(0, 0);
@@ -52,7 +52,7 @@ public class PositionCalculator {
             throw new IllegalArgumentException("Invalid input");
         }
 
-        List<String> allMoves = readFileOfMoves(input);
+        List<Integer> allMoves = readFileOfMoves(input);
 
         Position furthestPosition = new Position(0, 0);
         Position lastPosition = new Position(0, 0);
@@ -75,23 +75,23 @@ public class PositionCalculator {
         return furthestPosition;
     }
 
-    private List<String> readFileOfMoves(InputStream input) {
+    private List<Integer> readFileOfMoves(InputStream input) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
 
             return br.readLine()
                     .chars()
                     .mapToObj(c -> (char) c)
-                    .map(ch -> String.valueOf(ch))
+                    .map(ch -> Character.getNumericValue(ch))
                     .collect(Collectors.toList());
 
         } catch (IOException e) {
             e.printStackTrace();
-            return Collections. <String> emptyList();
+            return Collections.emptyList();
         }
     }
 
-    private void changePosition(Map<Integer, Position> validMoves, Position position, String move) {
-        Position nextPosition = validMoves.get(Integer.valueOf(move));
+    private void changePosition(Map<Integer, Position> validMoves, Position position, Integer move) {
+        Position nextPosition = validMoves.get(move);
 
         if (nextPosition == null) {
             throw new IllegalArgumentException("Next move is not valid: " + move);
