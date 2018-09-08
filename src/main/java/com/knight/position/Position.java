@@ -1,5 +1,8 @@
 package main.java.com.knight.position;
 
+/**
+ * Hold coordinates of the knight
+ */
 public class Position {
 
     private int x;

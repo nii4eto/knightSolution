@@ -29,7 +29,7 @@ public class PositionCalculatorTest {
     }
 
     @Test
-    public void testValidMoves() {
+    public void testDefineLastPosition() {
         InputStream validStream = PositionCalculatorTest.class.getResourceAsStream("/moves");
         InputStream validTestStream = PositionCalculatorTest.class.getResourceAsStream("/testmoves");
 
@@ -77,6 +77,9 @@ public class PositionCalculatorTest {
         positionCalculator.calculateLastPosition(invalidStream, validMoves);
     }
 
+    /**
+     * Define all possible moves of the knight
+     */
     private Map<Integer, Position> populateValidMovesList() {
         HashMap<Integer, Position> validMoves = new HashMap<>();
         validMoves.put(1, new Position(1, 2));

@@ -7,8 +7,16 @@ import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Responsible for defining the
+ * position of the knight
+ */
 public class PositionCalculator {
 
+    /**
+     * Calculate the position of the knight figure
+     * after executing all provided moves
+     */
     public Position calculateLastPosition(InputStream input, Map<Integer, Position> validMoves) {
         if(input == null) {
             throw new IllegalArgumentException("Invalid input");
@@ -32,6 +40,9 @@ public class PositionCalculator {
         }
     }
 
+    /**
+     * Define all positions where x=y
+     */
     public Set<Position> checkForEqualPositions(InputStream input, Map<Integer, Position> validMoves) {
         if(input == null) {
             throw new IllegalArgumentException("Invalid input");
@@ -61,6 +72,12 @@ public class PositionCalculator {
 
     }
 
+    /**
+     * Calculate furthest point on the board from the initial position (0, 0)
+     * that the figure has ever been while executing the list of instructions
+     *
+     * Sqrt((x1-x2)^2 + (y1 -y2)^2)
+     */
     public  Position calculateFurthestPoint(InputStream input, Map<Integer, Position> validMoves) {
         if(input == null) {
             throw new IllegalArgumentException("Invalid input");
@@ -95,6 +112,9 @@ public class PositionCalculator {
         }
     }
 
+    /**
+     * Based on the next move calculate last position
+     */
     private void changePosition(Map<Integer, Position> validMoves, Position position, Integer move) {
         Position nextPosition = validMoves.get(move);
 
@@ -106,18 +126,4 @@ public class PositionCalculator {
         position.setY(position.getY() + nextPosition.getY());
     }
 
-//    private List<Integer> readFileOfMoves(InputStream input) {
-//        try (BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
-//
-//            return br.readLine()
-//                    .chars()
-//                    .mapToObj(c -> (char) c)
-//                    .map(ch -> Character.getNumericValue(ch))
-//                    .collect(Collectors.toList());
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            return Collections.emptyList();
-//        }
-//    }
 }
