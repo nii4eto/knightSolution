@@ -15,15 +15,22 @@ public class PositionCalculator {
             throw new IllegalArgumentException("Invalid input");
         }
 
-        List<Integer> allMoves = readFileOfMoves(input);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
+            Position lastPosition = new Position(0, 0);
 
-        Position lastPosition = new Position(0, 0);
+             br.readLine()
+                    .chars()
+                    .mapToObj(c -> (char) c)
+                    .map(ch -> Character.getNumericValue(ch))
+                     .forEach(move -> {
+                         changePosition(validMoves, lastPosition, move);
+                     });
+             return lastPosition;
 
-        allMoves.forEach(move -> {
-            changePosition(validMoves, lastPosition, move);
-        });
-
-        return lastPosition;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public Set<Position> checkForEqualPositions(InputStream input, Map<Integer, Position> validMoves) {
@@ -31,20 +38,28 @@ public class PositionCalculator {
             throw new IllegalArgumentException("Invalid input");
         }
 
-        List<Integer> allMoves = readFileOfMoves(input);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
+            Set<Position> allEqualPositions = new HashSet<>();
+            Position lastPosition = new Position(0, 0);
 
-        Set<Position> allEqualPositions = new HashSet<>();
-        Position lastPosition = new Position(0, 0);
+            br.readLine()
+                    .chars()
+                    .mapToObj(c -> (char) c)
+                    .map(ch -> Character.getNumericValue(ch))
+                    .forEach(move -> {
+                        changePosition(validMoves, lastPosition, move);
 
-        allMoves.forEach(move -> {
-            changePosition(validMoves, lastPosition, move);
+                        if (lastPosition.getX() == lastPosition.getY()) {
+                            allEqualPositions.add(new Position(lastPosition.getX(), lastPosition.getY()));
+                        }
+                    });
+            return allEqualPositions;
 
-            if (lastPosition.getX() == lastPosition.getY()) {
-                allEqualPositions.add(new Position(lastPosition.getX(), lastPosition.getY()));
-            }
-        });
+        } catch (IOException e) {
+            e.printStackTrace();
+            return Collections.emptySet();
+        }
 
-        return allEqualPositions;
     }
 
     public  Position calculateFurthestPoint(InputStream input, Map<Integer, Position> validMoves) {
@@ -52,41 +67,32 @@ public class PositionCalculator {
             throw new IllegalArgumentException("Invalid input");
         }
 
-        List<Integer> allMoves = readFileOfMoves(input);
-
-        Position furthestPosition = new Position(0, 0);
-        Position lastPosition = new Position(0, 0);
-
-        AtomicReference<Double> furthestDistance = new AtomicReference<Double>(0.0);
-
-        allMoves.forEach(move -> {
-            changePosition(validMoves, lastPosition, move);
-
-            double distanceBetweenPoints = Math.sqrt(Math.pow(lastPosition.getX(), 2) + Math.pow(lastPosition.getY(), 2));
-
-            if(furthestDistance.get() < distanceBetweenPoints) {
-                furthestDistance.set(distanceBetweenPoints);
-
-                furthestPosition.setX(lastPosition.getX());
-                furthestPosition.setY(lastPosition.getY());
-            }
-        });
-
-        return furthestPosition;
-    }
-
-    private List<Integer> readFileOfMoves(InputStream input) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
+            Position furthestPosition = new Position(0, 0);
+            Position lastPosition = new Position(0, 0);
 
-            return br.readLine()
+            AtomicReference<Double> furthestDistance = new AtomicReference<Double>(0.0);
+
+            br.readLine()
                     .chars()
                     .mapToObj(c -> (char) c)
                     .map(ch -> Character.getNumericValue(ch))
-                    .collect(Collectors.toList());
+                    .forEach(move -> {
+                        changePosition(validMoves, lastPosition, move);
+
+                        double distanceBetweenPoints = Math.sqrt(Math.pow(lastPosition.getX(), 2) + Math.pow(lastPosition.getY(), 2));
+
+                        if(furthestDistance.get() < distanceBetweenPoints) {
+                            furthestDistance.set(distanceBetweenPoints);
+
+                            furthestPosition.setX(lastPosition.getX());
+                            furthestPosition.setY(lastPosition.getY()); }
+                    });
+            return furthestPosition;
 
         } catch (IOException e) {
             e.printStackTrace();
-            return Collections.emptyList();
+            return null;
         }
     }
 
@@ -100,4 +106,19 @@ public class PositionCalculator {
         position.setX(position.getX() + nextPosition.getX());
         position.setY(position.getY() + nextPosition.getY());
     }
+
+//    private List<Integer> readFileOfMoves(InputStream input) {
+//        try (BufferedReader br = new BufferedReader(new InputStreamReader(input))) {
+//
+//            return br.readLine()
+//                    .chars()
+//                    .mapToObj(c -> (char) c)
+//                    .map(ch -> Character.getNumericValue(ch))
+//                    .collect(Collectors.toList());
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return Collections.emptyList();
+//        }
+//    }
 }
